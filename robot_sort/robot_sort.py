@@ -92,11 +92,44 @@ class SortingRobot:
         """
         return self._light == "ON"
 
+    def bubble_or_not(self):
+        """
+        checks whether current item should be swapped with next and does so if so
+        from current position empty-handed
+        returns to starting position regardless
+        turns on light if swap happens
+        do not call from end of list
+        """
+        self.swap_item()
+        self.move_right()
+        if self.compare_item() == 1:
+            # print(f"swapping {self._item} and {self._list[self._position]}")
+            self.swap_item()
+            self.set_light_on()
+        self.move_left()
+        self.swap_item()
+
+
     def sort(self):
         """
         Sort the robot's list.
         """
-        # Fill this out
+        # first pass: bubble sort
+        # robot starts empty-handed at position 0, light off
+        # with each iteration, robot will compare adjacent elements for swaps
+        # light will turn on if a swap is made
+        # when robot reached the end of the list, return to start and go through again
+        # unless the light is off, in which case it's done
+        while True:
+            while self.can_move_right():
+                self.bubble_or_not()
+                self.move_right()
+            if self.light_is_on():
+                self.set_light_off()
+                while self.can_move_left():
+                    self.move_left()
+            else:
+                break
         pass
 
 
