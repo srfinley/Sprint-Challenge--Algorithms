@@ -109,29 +109,66 @@ class SortingRobot:
         self.swap_item()
 
 
+
     def sort(self):
         """
         Sort the robot's list.
         """
         # first pass: bubble sort
         # robot starts empty-handed at position 0, light off
-        # with each iteration, robot will compare adjacent elements for swaps
+        # with each step along the list, robot will compare adjacent elements for swaps
+        # and make a swap if appropriate
         # light will turn on if a swap is made
         # when robot reaches the end of the list, return to start and go through again
-        # unless the light is off, in which case it's done
+        # unless the light is off, in which case it's done!
+        # while True:
+        #     while self.can_move_right():
+        #         self.bubble_or_not()
+        #         self.move_right()
+        #     if self.light_is_on():
+        #         self.set_light_off()
+        #         while self.can_move_left():
+        #             self.move_left()
+        #     else:
+        #         break
+        # pass
+
+        # improvement time:
+        # in traditional bubble sorting no time is lost to cursor movement
+        # would this be better or worse if the robot bubbled as it returned to start?
+        # while True:
+        #     while self.can_move_right():
+        #         self.bubble_or_not()
+        #         self.move_right()
+        #     if self.light_is_on():
+        #         self.set_light_off()
+        #         self.move_left()
+        #         while self.can_move_left():
+        #             self.bubble_or_not()
+        #             self.move_left()
+        #     else:
+        #         break
+        # pass
+
+        # improvement time:
+        # second pass does not even pass first test!!
+        # okay what if the pass back also checked for the light
         while True:
             while self.can_move_right():
                 self.bubble_or_not()
                 self.move_right()
             if self.light_is_on():
                 self.set_light_off()
+                self.move_left()
                 while self.can_move_left():
+                    self.bubble_or_not()
                     self.move_left()
+                if not self.light_is_on():
+                    break
+                self.set_light_off() # added
             else:
                 break
         pass
-        # in traditional bubble sorting no time is lost to cursor movement
-        # would this be better or worse if the robot bubbled as it returned to start?
 
 
 if __name__ == "__main__":
@@ -144,4 +181,8 @@ if __name__ == "__main__":
 
     robot.sort()
     print(robot._list)
-    # print(robot._time)  # 52,227
+    print(robot._time)
+    # t = 52,227 on first pass
+    # 30,505 (30,533 after bug fixes) on second 
+    # 30,038 on third
+    # 29,547 after tweak
